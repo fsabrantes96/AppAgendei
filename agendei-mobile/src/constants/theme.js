@@ -15,4 +15,15 @@ const FONT_SIZE = {
     xxl: 64
 }
 
-export {COLORS, FONT_SIZE}
+const pastelButtonTheme = {
+    light: {
+        backgroundColor: "#FAD02E",  // Coral suave pastel
+        color: "#FFFFFF",  // Texto branco
+        borderColor: "#F6A821",  // Um tom um pouco mais forte para a borda
+        borderRadius: 8,
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+    },
+};
+
+export {COLORS, FONT_SIZE, pastelButtonTheme}

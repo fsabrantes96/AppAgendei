@@ -23,5 +23,13 @@ export const styles = {
             fontSize: FONT_SIZE.md,
             fontWeight: "bold",
             color: COLORS.bordo,
+        },
+        containerButton: {
+            position: "absolute",
+            bottom: 20,
+            left: 0,
+            right: 0,
+            paddingHorizontal: 12,
+            zIndex: 1
         }
     }

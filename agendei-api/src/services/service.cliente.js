@@ -7,12 +7,13 @@ async function Listar(name) {
     return clientes;
 }
 
-async function Inserir(nome, email, telefone, cpf, dataNascimento) {
+async function Inserir(nome, email, telefone, cpf, anamnese, dataNascimento, procedimentosAnteriores, icone) {
 
-    const clientes = await repoCliente.Inserir(nome, email, telefone, cpf, dataNascimento);
-
+    const clientes = await repoCliente.Inserir(nome, email, telefone, cpf, anamnese, dataNascimento, procedimentosAnteriores, icone);
+    
     return clientes;
 }
+
 
 async function Editar(idCliente, nome, email, telefone, cpf, dataNascimento) {
 

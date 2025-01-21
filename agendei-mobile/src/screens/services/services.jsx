@@ -20,7 +20,6 @@ function Services(props) {
     }
 
     useEffect(() => {
-        console.log("Dados da API:", services);
         async function fetchServices() {
             try {
                 const response = await api.get(`/user/${user.idUser}/services`);

@@ -19,15 +19,15 @@ async function Listar(name) {
     return clientes;
 }
 
-async function Inserir(nome, email, telefone, cpf, dataNascimento) {
+async function Inserir(nome, email, telefone, cpf, anamnese, dataNascimento, procedimentosAnteriores, icone) {
+    let sql = `insert into clientes(nome, email, telefone, cpf, anamnese, dataNascimento, procedimentosAnteriores, icone)
+    values(?, ?, ?, ?, ?, ?, ?, ?) returning idCliente`;
 
-    let sql = `insert into clientes(nome, email, telefone, cpf, dataNascimento, icone)
-    values(?, ?, ?, ?, ?, ?) returning idCliente`;
-
-    const clientes = await query(sql, [nome, email, telefone, cpf, dataNascimento]);
+    const clientes = await query(sql, [nome, email, telefone, cpf, anamnese, dataNascimento, procedimentosAnteriores, icone]);
 
     return clientes[0];
 }
+
 
 async function Editar(idCliente, nome, email, telefone, cpf, dataNascimento) {
 

@@ -59,7 +59,7 @@ function AbaProfile() {
                 </View>
 
             <View style={styles.containerButton}>
-                <Button style={styles.botao} text="Desconectar" theme="danger"
+                <Button style={styles.botao} text="Desconectar" 
                 onPress={Logout}
                 /> 
             </View>

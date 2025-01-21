@@ -9,17 +9,25 @@ async function Listar(req, res) {
 }
 
 async function Inserir(req, res) {
+    const { nome, email, telefone, cpf, anamnese, dataNascimento, procedimentosAnteriores, icone } = req.body;
 
-    /*const name = req.body.name;
-    const email = req.body.name;
-    const telefone = req.body.name;
-    const cpf = req.body.name;
-    const dataNascimento = req.body.name;*/
+    try {
+        const clientes = await serviceCliente.Inserir(
+            nome,
+            email,
+            telefone,
+            cpf,
+            anamnese,
+            dataNascimento,
+            procedimentosAnteriores,
+            icone
+        );
 
-    const {nome, email, telefone, cpf, dataNascimento} = req.body;
-    const clientes = await serviceCliente.Inserir(nome, email, telefone, cpf, dataNascimento);
-
-    res.status(201).json(clientes)
+        res.status(201).json(clientes);
+    } catch (error) {
+        console.error('Erro ao inserir cliente:', error);
+        res.status(500).json({ error: 'Erro ao inserir cliente' });
+    }
 }
 
 async function Editar(req, res) {

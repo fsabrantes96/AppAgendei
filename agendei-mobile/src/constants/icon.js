@@ -6,5 +6,6 @@ import male from "../assets/male.png";
 import female from "../assets/female.png";
 import clock from "../assets/clock.png";
 import logoHome from "../assets/Simbolo_bordo_mobile.png"
+import addPerson from "../assets/addPerson.png";
 
-export default {home, calendar, profile, logo, male, clock, female, logoHome}
+export default {home, calendar, profile, logo, male, clock, female, logoHome, addPerson}
