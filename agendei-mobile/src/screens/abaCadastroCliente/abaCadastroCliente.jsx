@@ -164,11 +164,12 @@ function AbaCadastroCliente() {
                 {showDatePicker && (
                     <DateTimePicker
                     style={styles.calendar}
-                    value={selectedDate} // Sempre um objeto Date
+                    value={selectedDate} // Objeto Date válido
                     mode="date"
                     display={Platform.OS === "ios" ? "spinner" : "calendar"}
                     onChange={handleDateChange}
-                    maximumDate={new Date()} // Data máxima (hoje)
+                    maximumDate={new Date()} // Limita até a data atual
+                    minimumDate={new Date(1900, 0, 1)} // Permite datas desde 01/01/1900
                 />
                 )}
                 <TextInput

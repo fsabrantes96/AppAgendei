@@ -28,9 +28,8 @@ function Schedule(props) {
 
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedHour, setSelectedHour] = useState("");
-  const [occupiedHours, setOccupiedHours] = useState({}); // Estado atualizado para armazenar horários por data
+  const [occupiedHours, setOccupiedHours] = useState({});
 
-  // Função para carregar os horários ocupados
   async function loadOccupiedHours() {
     try {
       const response = await api.get("/appointments");
@@ -76,13 +75,28 @@ function Schedule(props) {
   }
 
   useEffect(() => {
-    loadOccupiedHours(); // Carregar horários ocupados ao iniciar o componente
+    loadOccupiedHours();
   }, []);
 
-  // Filtrar horários disponíveis para a data selecionada
-  const availableHours = horarios.filter(
-    (hour) => !(occupiedHours[selectedDate]?.includes(hour))
-  );
+  const filterAvailableHours = () => {
+    const now = new Date();
+    const currentHour = `${String(now.getHours()).padStart(2, "0")}:${String(
+      Math.ceil(now.getMinutes() / 30) * 30
+    ).padStart(2, "0")}`;
+
+    // Caso seja o dia atual, filtrar horários passados
+    if (selectedDate === now.toISOString().split("T")[0]) {
+      return horarios.filter(
+        (hour) =>
+          hour >= currentHour && !(occupiedHours[selectedDate]?.includes(hour))
+      );
+    }
+
+    // Caso seja outra data, retornar horários disponíveis normalmente
+    return horarios.filter((hour) => !(occupiedHours[selectedDate]?.includes(hour)));
+  };
+
+  const availableHours = filterAvailableHours();
 
   return (
     <View style={styles.container}>
