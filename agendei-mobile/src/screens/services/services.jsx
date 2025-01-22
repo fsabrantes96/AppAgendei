@@ -34,26 +34,30 @@ function Services(props) {
     }, [user.idUser]);  // Recarrega os serviços quando o idUser muda
 
     function CalcularIdade(dataNascimento) {
-        if(!dataNascimento) return "Data Iválida";
-
-        // Transformar data em um objeto Date
-        const nascimento = new Date(dataNascimento);
+        if (!dataNascimento) return "Data inválida";
+    
+        // Converter a data para o formato ISO (AAAA-MM-DD)
+        const partes = dataNascimento.split("-");
+        const dataFormatada = `${partes[2]}-${partes[1]}-${partes[0]}`;
+    
+        const nascimento = new Date(dataFormatada);
         const hoje = new Date();
-
+    
         // Calcular a idade
         let idade = hoje.getFullYear() - nascimento.getFullYear();
-
+    
         // Ajustar caso o aniversário ainda não tenha ocorrido este ano
         const mesAtual = hoje.getMonth();
         const diaAtual = hoje.getDate();
         const mesNascimento = nascimento.getMonth();
         const diaNascimento = nascimento.getDate();
-
+    
         if (mesAtual < mesNascimento || (mesAtual === mesNascimento && diaAtual < diaNascimento)) {
             idade--;
         }
         return idade;
     }
+    
 
     return (
  

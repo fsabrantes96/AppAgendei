@@ -50,7 +50,12 @@ function AbaHome(props) {
                         dataNascimento={item.dataNascimento}
                         procedimentosAnteriores={item.procedimentosAnteriores}
                         icone={item.icone}
-                        onPress={() => props.navigation.navigate("services", item)}
+                        onPress={() => props.navigation.navigate("services",{
+                            idCliente: item.idCliente,
+                            nome: item.nome,
+                            dataNascimento: item.dataNascimento,
+                            iconCliente: item.icone
+                        })}
                     />
                 )}
             />

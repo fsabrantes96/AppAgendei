@@ -37,6 +37,18 @@ export const styles = {
         fontWeight: "bold",
         color: "#FFFFFF",
     },
+    label: {
+        fontSize: FONT_SIZE.md,
+        color: COLORS.bordo,
+        marginBottom: 5,
+        fontWeight: 500
+    },
+    calendar:{
+        todayTextColor: COLORS.bordo,
+        selectedDayBackgroundColor: COLORS.argila,
+        selectedDayTextColor: COLORS.creme,
+        arrowColor: COLORS.bordo
+    },
     picker: {
         backgroundColor: "white"
     },
@@ -71,6 +83,14 @@ export const styles = {
     fontWeight: "bold",
     marginBottom: 20,
     color: "#fff",
+  },
+  actionTextEdit: {
+    color: COLORS.blush,
+    
+  },
+  actionTextDelete: {
+    color: COLORS.bordo,
+    marginLeft: 10
   },
   modalButtons: {
     flexDirection: "row",

@@ -1,21 +1,11 @@
 import React, { useState } from "react";
-import {
-    Alert,
-    Text,
-    TextInput,
-    View,
-    StyleSheet,
-    TouchableOpacity,
-    Platform,
-    ScrollView,
-    Keyboard,
-    Modal,
-} from "react-native";
+import { Alert, Text, TextInput, View, TouchableOpacity, Platform, ScrollView, Keyboard, Modal, } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { styles } from "./abaCadastroCliente.style";
 import Button from "../../components/button/button";
 import api from "../../constants/api";
 import { Picker } from "@react-native-picker/picker";
+import { COLORS, FONT_SIZE } from "../../constants/theme";
 
 function AbaCadastroCliente() {
     const [nome, setNome] = useState("");
@@ -27,7 +17,6 @@ function AbaCadastroCliente() {
     const [procedimentosAnteriores, setProcedimentosAnteriores] = useState("");
     const [procedimentos, setProcedimentos] = useState([]);
     const [sexo, setSexo] = useState("");
-
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -37,18 +26,18 @@ function AbaCadastroCliente() {
     function handleDateChange(event, date) {
         setShowDatePicker(false);
         if (date) {
-            setSelectedDate(date);
-            const formattedDate = formatDate(date);
-            setDataNascimento(formattedDate);
+            setSelectedDate(date); // Armazena como objeto Date
+            setDataNascimento(formatDate(date)); // Formata apenas para exibição
         }
     }
-
+    
     function formatDate(date) {
         const day = String(date.getDate()).padStart(2, "0");
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const year = date.getFullYear();
         return `${day}-${month}-${year}`;
     }
+    
 
     async function HandleSubmit() {
         if (!nome || !email || !telefone || !cpf || !dataNascimento || !sexo) {
@@ -174,12 +163,13 @@ function AbaCadastroCliente() {
                 </TouchableOpacity>
                 {showDatePicker && (
                     <DateTimePicker
-                        value={selectedDate}
-                        mode="date"
-                        display={Platform.OS === "ios" ? "spinner" : "calendar"}
-                        onChange={handleDateChange}
-                        maximumDate={new Date()}
-                    />
+                    style={styles.calendar}
+                    value={selectedDate} // Sempre um objeto Date
+                    mode="date"
+                    display={Platform.OS === "ios" ? "spinner" : "calendar"}
+                    onChange={handleDateChange}
+                    maximumDate={new Date()} // Data máxima (hoje)
+                />
                 )}
                 <TextInput
                     style={styles.input}
@@ -194,15 +184,16 @@ function AbaCadastroCliente() {
                         <View key={index} style={styles.procedimentoItem}>
                             <Text>{" - " + procedimento}</Text>
                             <View style={styles.procedimentoActions}>
-                                <TouchableOpacity
-                                    onPress={() => deleteProcedure(index)}
-                                >
-                                    <Text style={styles.actionText}>Excluir</Text>
-                                </TouchableOpacity>
+                                
                                 <TouchableOpacity
                                     onPress={() => openEditModal(index)}
                                 >
-                                    <Text style={styles.actionText}>Editar</Text>
+                                    <Text style={styles.actionTextEdit}>Editar</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => deleteProcedure(index)}
+                                >
+                                    <Text style={styles.actionTextDelete}>Excluir</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
