@@ -3,21 +3,38 @@ import { Alert, FlatList, Text, View, TextInput,TouchableOpacity } from "react-n
 import { styles } from "./abahome.style";
 import Cliente from "../../components/cliente/cliente.jsx";
 import { AuthContext } from "../../context/auth.js";
+import api from "../../constants/api.js"
 
-function AbaHome(props) {
-    const { clientes } = useContext(AuthContext); // Certifique-se de que o contexto está sendo usado corretamente
+
+function AbaHome({ navigation, route }) {
+    const { clientes, setClientes } = useContext(AuthContext); // Certifique-se de ter acesso à função `setClientes`
     const [filteredClientes, setFilteredClientes] = useState([]);
     const [searchText, setSearchText] = useState("");
 
+    async function fetchClientes() {
+        try {
+            const response = await api.get("/cliente");
+            setClientes(response.data); // Atualiza o contexto com os clientes mais recentes
+        } catch (error) {
+            console.error("Erro ao buscar clientes:", error);
+        }
+    }
+
     useEffect(() => {
-        setFilteredClientes(clientes); // Atualiza a lista filtrada quando a lista global muda
-    }, [clientes]);
+        fetchClientes(); // Busca os clientes ao carregar a tela
+    }, []);
+
+    useEffect(() => {
+        if (route.params?.reload) {
+            fetchClientes(); // Recarrega a lista se o parâmetro `reload` for recebido
+        }
+    }, [route.params?.reload]);
 
     useEffect(() => {
         if (searchText === "") {
             setFilteredClientes(clientes);
         } else {
-            const filtered = clientes.filter(cliente =>
+            const filtered = clientes.filter((cliente) =>
                 cliente.nome.toLowerCase().includes(searchText.toLowerCase())
             );
             setFilteredClientes(filtered);
@@ -37,7 +54,7 @@ function AbaHome(props) {
 
             <FlatList
                 data={filteredClientes}
-                keyExtractor={doc => doc.idCliente.toString()}
+                keyExtractor={(doc) => doc.idCliente.toString()}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
                     <Cliente
@@ -50,12 +67,14 @@ function AbaHome(props) {
                         dataNascimento={item.dataNascimento}
                         procedimentosAnteriores={item.procedimentosAnteriores}
                         icone={item.icone}
-                        onPress={() => props.navigation.navigate("services",{
-                            idCliente: item.idCliente,
-                            nome: item.nome,
-                            dataNascimento: item.dataNascimento,
-                            iconCliente: item.icone
-                        })}
+                        onPress={() =>
+                            navigation.navigate("services", {
+                                idCliente: item.idCliente,
+                                nome: item.nome,
+                                dataNascimento: item.dataNascimento,
+                                iconCliente: item.icone,
+                            })
+                        }
                     />
                 )}
             />

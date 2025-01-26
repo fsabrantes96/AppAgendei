@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import api from "../constants/api"; // Certifique-se de que o caminho está correto.
+import api from "../constants/api";
 
 const AuthContext = createContext({});
 
@@ -22,7 +22,7 @@ function AuthProvider({ children }) {
         fetchClientes();
     }, []);
 
-    // Adicionar novo cliente
+    // Função para adicionar um cliente
     const addCliente = async (novoCliente) => {
         try {
             const response = await api.post("/cliente", novoCliente);
@@ -37,35 +37,15 @@ function AuthProvider({ children }) {
         }
     };
 
-    // Atualizar cliente
-    const updateCliente = async (idCliente, clienteAtualizado) => {
+    // Função para recarregar os clientes
+    const loadClientes = async () => {
         try {
-            const response = await api.put(`/cliente/${idCliente}`, clienteAtualizado);
+            const response = await api.get("/cliente");
             if (response.data) {
-                setClientes((prevClientes) =>
-                    prevClientes.map((cliente) =>
-                        cliente.idCliente === idCliente ? response.data : cliente
-                    )
-                );
-                return response.data;
+                setClientes(response.data);
             }
-            throw new Error("Erro ao atualizar cliente.");
         } catch (error) {
-            console.error("Erro ao atualizar cliente:", error);
-            throw error;
-        }
-    };
-
-    // Remover cliente
-    const deleteCliente = async (idCliente) => {
-        try {
-            await api.delete(`/cliente/${idCliente}`);
-            setClientes((prevClientes) =>
-                prevClientes.filter((cliente) => cliente.idCliente !== idCliente)
-            );
-        } catch (error) {
-            console.error("Erro ao remover cliente:", error);
-            throw error;
+            console.error("Erro ao carregar clientes:", error);
         }
     };
 
@@ -77,8 +57,7 @@ function AuthProvider({ children }) {
                 clientes,
                 setClientes,
                 addCliente,
-                updateCliente,
-                deleteCliente,
+                loadClientes, // Adicionando a função loadClientes
             }}
         >
             {children}
