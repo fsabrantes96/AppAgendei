@@ -1,22 +1,29 @@
-import sqlite3 from "sqlite3";
+import Database from 'better-sqlite3';
 
-const SQLite = sqlite3.verbose();
+// Cria a conexão com o banco de dados
+const db = new Database('./src/database/banco.db', {
+  readonly: false, // true se quiser apenas leitura
+  fileMustExist: true // lança erro se o arquivo não existir
+});
 
-function query(command, params, method = 'all') {
-    return new Promise(function (resolve, reject) {
-        db[method](command, params, function (error, result) {
-            if (error)
-                reject(error)
-            else
-                resolve(result);
-        });
-    });
+// Função para executar comandos (get, all, run) de forma genérica
+function query(command, params = [], method = 'all') {
+  try {
+    const stmt = db.prepare(command);
+
+    switch (method) {
+      case 'get':
+        return stmt.get(...params);
+      case 'run':
+        return stmt.run(...params);
+      case 'all':
+      default:
+        return stmt.all(...params);
+    }
+  } catch (error) {
+    console.error("Erro ao executar query:", error.message);
+    throw error;
+  }
 }
-
-const db = new SQLite.Database("./src/database/banco.db",
-                            SQLite.OPEN_READWRITE, (err) => {
-                                if(err)
-                                    return console.log("Erro ao conectar com banco: " + err.message);
-                            });
 
 export { db, query };
